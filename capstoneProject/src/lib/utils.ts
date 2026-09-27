@@ -1,3 +1,4 @@
+import { DbTaskRow, Task } from "../types/task.js";
 import {
   DbUserRow,
   DbUserWithPasswordRow,
@@ -24,4 +25,28 @@ export function transformUserWithPassword(
     createdAt: user.created_at,
     passwordHash: user?.password_hash ? user.password_hash : null,
   };
+}
+
+export function transformTask(task: DbTaskRow): Task {
+  return {
+    id: task.id,
+    title: task.title,
+    status: task.status,
+    userId: task.user_id,
+    createdAt: task.created_at,
+    updatedAt: task.updated_at,
+  };
+}
+
+export function transformTasks(tasks: DbTaskRow[]): Task[] {
+  return tasks.map((task) => {
+    return {
+      id: task.id,
+      title: task.title,
+      status: task.status,
+      userId: task.user_id,
+      createdAt: task.created_at,
+      updatedAt: task.updated_at,
+    };
+  });
 }

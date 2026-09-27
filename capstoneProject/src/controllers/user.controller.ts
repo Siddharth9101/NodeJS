@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { loginUser, registerUser } from "../services/auth.service.js";
-import { AppError } from "../errors/AppError.js";
-import { MIN_PASSWORD_LENGTH } from "../constants/constants.js";
 import { logger } from "../lib/logger.js";
+import { userSchema } from "../schemas/user.js";
 
 export async function register(
   req: Request,
@@ -10,25 +9,9 @@ export async function register(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const reqData = req.body;
+    const parsedData = userSchema.parse(req.body);
 
-    if (
-      !reqData?.email ||
-      !reqData?.password ||
-      typeof reqData?.email !== "string" ||
-      typeof reqData?.password !== "string"
-    ) {
-      throw new AppError(400, "email and password are required");
-    }
-    const { email, password } = reqData;
-
-    if (!email.includes("@")) {
-      throw new AppError(422, "email must be a valid email address");
-    }
-
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      throw new AppError(422, "password must be atleast 6 characters long");
-    }
+    const { email, password } = parsedData;
 
     const normalizedEmail = email.toLowerCase().trim();
 
@@ -53,21 +36,9 @@ export async function login(
   next: NextFunction,
 ): Promise<void> {
   try {
-    const reqData = req.body;
+    const parsedData = userSchema.parse(req.body);
 
-    if (
-      !reqData?.email ||
-      !reqData?.password ||
-      typeof reqData?.email !== "string" ||
-      typeof reqData?.password !== "string"
-    ) {
-      throw new AppError(400, "email and password are required");
-    }
-    const { email, password } = reqData;
-
-    if (!email.includes("@")) {
-      throw new AppError(422, "email must be a valid email address");
-    }
+    const { email, password } = parsedData;
 
     const normalizedEmail = email.toLowerCase().trim();
 
@@ -91,6 +62,7 @@ export async function me(
   try {
     res.status(200).json({
       success: true,
+      message: "user details fetched successfully",
       data: req.user,
     });
   } catch (err) {

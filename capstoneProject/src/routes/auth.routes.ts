@@ -7,4 +7,3 @@ export const authRouter = Router();
 authRouter.post("/register", register);
 authRouter.post("/login", login);
 authRouter.get("/me", authenticate, me);
-// 11:48:26
