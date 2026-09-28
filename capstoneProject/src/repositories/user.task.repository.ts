@@ -2,10 +2,7 @@ import { pool } from "../lib/db.js";
 import { transformTask, transformTasks } from "../lib/utils.js";
 import { DbTaskRow, Task } from "../types/task.js";
 
-export async function createTaskRepo(
-  userId: string,
-  title: string,
-): Promise<Task> {
+export async function create(userId: string, title: string): Promise<Task> {
   const result = await pool.query<DbTaskRow>(
     `
         INSERT INTO tasks (title, user_id)
@@ -18,7 +15,7 @@ export async function createTaskRepo(
   return transformTask(result.rows[0]);
 }
 
-export async function findTasksByUserIdRepo(userId: string): Promise<Task[]> {
+export async function findAllByUserId(userId: string): Promise<Task[]> {
   const result = await pool.query(
     `
     SELECT * FROM tasks WHERE user_id = $1 ORDER BY created_at DESC
@@ -29,7 +26,7 @@ export async function findTasksByUserIdRepo(userId: string): Promise<Task[]> {
   return result.rows.length > 0 ? transformTasks(result.rows) : [];
 }
 
-export async function findTaskByIdAndUserIdRepo(
+export async function findByIdAndUserId(
   taskId: string,
   userId: string,
 ): Promise<Task | null> {
@@ -43,7 +40,7 @@ export async function findTaskByIdAndUserIdRepo(
   return result.rows[0] ? transformTask(result.rows[0]) : null;
 }
 
-export async function updateTaskByIdAndUserIdRepo(
+export async function updateByIdAndUserId(
   taskId: string,
   userId: string,
   title: string,
@@ -61,7 +58,7 @@ export async function updateTaskByIdAndUserIdRepo(
   return result.rows[0] ? transformTask(result.rows[0]) : null;
 }
 
-export async function deleteTaskByIdRepo(
+export async function deleteByIdAndUserId(
   taskId: string,
   userId: string,
 ): Promise<void> {

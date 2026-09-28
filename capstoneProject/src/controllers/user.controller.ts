@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { loginUser, registerUser } from "../services/auth.service.js";
+import * as authService from "../services/auth.service.js";
 import { logger } from "../lib/logger.js";
 import { userSchema } from "../schemas/user.js";
 
@@ -15,7 +15,7 @@ export async function register(
 
     const normalizedEmail = email.toLowerCase().trim();
 
-    const user = await registerUser(normalizedEmail, password);
+    const user = await authService.register(normalizedEmail, password);
 
     logger.info(
       `new user registered, id: ${user.id}, requestId: ${req.requestId}`,
@@ -42,7 +42,7 @@ export async function login(
 
     const normalizedEmail = email.toLowerCase().trim();
 
-    const { accessToken } = await loginUser(normalizedEmail, password);
+    const { accessToken } = await authService.login(normalizedEmail, password);
 
     res.status(200).json({
       success: true,

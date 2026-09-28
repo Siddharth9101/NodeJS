@@ -1,15 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { taskParams, taskSchema } from "../schemas/task.js";
-import {
-  createTaskService,
-  deleteTaskByIdService,
-  getTaskByIdAndUserIdService,
-  getTasksByUserIdService,
-  updateTaskByIdAndUserIdService,
-} from "../services/user.task.service.js";
+import * as userTaskService from "../services/user.task.service.js";
 import { logger } from "../lib/logger.js";
 
-export async function createController(
+export async function create(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -17,7 +11,7 @@ export async function createController(
   try {
     const parsedData = taskSchema.parse(req.body);
 
-    const task = await createTaskService(req.user!.id, parsedData.title);
+    const task = await userTaskService.create(req.user!.id, parsedData.title);
 
     logger.info(
       `new task created, taskId: ${task.id}, userId: ${task.userId}, requestId: ${req.requestId}`,
@@ -33,13 +27,13 @@ export async function createController(
   }
 }
 
-export async function getTasksByUserIdController(
+export async function getTasksByUserId(
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> {
   try {
-    const tasks = await getTasksByUserIdService(req.user!.id);
+    const tasks = await userTaskService.getAllByUserId(req.user!.id);
 
     res.status(200).json({
       success: true,
@@ -51,7 +45,7 @@ export async function getTasksByUserIdController(
   }
 }
 
-export async function getTaskByIdController(
+export async function getTaskById(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -59,7 +53,7 @@ export async function getTaskByIdController(
   try {
     const parsedParams = taskParams.parse(req.params);
 
-    const task = await getTaskByIdAndUserIdService(
+    const task = await userTaskService.getByIdAndUserId(
       parsedParams.taskId,
       req.user!.id,
     );
@@ -74,7 +68,7 @@ export async function getTaskByIdController(
   }
 }
 
-export async function updateByIdController(
+export async function updateById(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -84,7 +78,7 @@ export async function updateByIdController(
 
     const parsedBody = taskSchema.parse(req.body);
 
-    const task = await updateTaskByIdAndUserIdService(
+    const task = await userTaskService.updateByIdAndUserId(
       parsedParams.taskId,
       req.user!.id,
       parsedBody.title,
@@ -100,7 +94,7 @@ export async function updateByIdController(
   }
 }
 
-export async function deleteByIdController(
+export async function deleteById(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -108,7 +102,10 @@ export async function deleteByIdController(
   try {
     const parsedParams = taskParams.parse(req.params);
 
-    await deleteTaskByIdService(parsedParams.taskId, req.user!.id);
+    await userTaskService.deleteByIdAndUserId(
+      parsedParams.taskId,
+      req.user!.id,
+    );
 
     res.status(204).json({
       success: true,

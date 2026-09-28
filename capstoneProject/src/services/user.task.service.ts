@@ -1,29 +1,20 @@
 import { AppError } from "../errors/AppError.js";
-import {
-  createTaskRepo,
-  deleteTaskByIdRepo,
-  findTaskByIdAndUserIdRepo,
-  findTasksByUserIdRepo,
-  updateTaskByIdAndUserIdRepo,
-} from "../repositories/user.task.repository.js";
+import * as userTaskRepo from "../repositories/user.task.repository.js";
 import { Task } from "../types/task.js";
 
-export async function createTaskService(
-  userId: string,
-  title: string,
-): Promise<Task> {
-  return createTaskRepo(userId, title);
+export async function create(userId: string, title: string): Promise<Task> {
+  return userTaskRepo.create(userId, title);
 }
 
-export async function getTasksByUserIdService(userId: string): Promise<Task[]> {
-  return findTasksByUserIdRepo(userId);
+export async function getAllByUserId(userId: string): Promise<Task[]> {
+  return userTaskRepo.findAllByUserId(userId);
 }
 
-export async function getTaskByIdAndUserIdService(
+export async function getByIdAndUserId(
   taskId: string,
   userId: string,
 ): Promise<Task> {
-  const task = await findTaskByIdAndUserIdRepo(taskId, userId);
+  const task = await userTaskRepo.findByIdAndUserId(taskId, userId);
   if (!task) {
     throw new AppError(404, "task not found");
   }
@@ -31,12 +22,12 @@ export async function getTaskByIdAndUserIdService(
   return task;
 }
 
-export async function updateTaskByIdAndUserIdService(
+export async function updateByIdAndUserId(
   taskId: string,
   userId: string,
   title: string,
 ): Promise<Task> {
-  const task = await updateTaskByIdAndUserIdRepo(taskId, userId, title);
+  const task = await userTaskRepo.updateByIdAndUserId(taskId, userId, title);
   if (!task) {
     throw new AppError(404, "task not found");
   }
@@ -44,9 +35,9 @@ export async function updateTaskByIdAndUserIdService(
   return task;
 }
 
-export async function deleteTaskByIdService(
+export async function deleteByIdAndUserId(
   taskId: string,
   userId: string,
 ): Promise<void> {
-  await deleteTaskByIdRepo(taskId, userId);
+  await userTaskRepo.deleteByIdAndUserId(taskId, userId);
 }

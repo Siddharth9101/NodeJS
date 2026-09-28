@@ -1,15 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  getAllAdminTasksService,
-  updateAdminTaskService,
-} from "../services/admin.task.service.js";
+import * as adminTaskService from "../services/admin.task.service.js";
 import {
   taskParams,
   taskQueryParams,
   updateAdminTaskSchema,
 } from "../schemas/task.js";
 
-export async function getAdminAllTasksController(
+export async function getAllAdminTasks(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -17,7 +14,7 @@ export async function getAdminAllTasksController(
   try {
     const parsedQuery = taskQueryParams.parse(req.query);
 
-    const tasks = await getAllAdminTasksService(parsedQuery);
+    const tasks = await adminTaskService.getAll(parsedQuery);
 
     res.status(200).json({
       success: true,
@@ -29,7 +26,7 @@ export async function getAdminAllTasksController(
   }
 }
 
-export async function updateAdminTaskController(
+export async function updateAdminTask(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -38,7 +35,7 @@ export async function updateAdminTaskController(
     const parsedBody = updateAdminTaskSchema.parse(req.body);
     const parsedParams = taskParams.parse(req.params);
 
-    const task = await updateAdminTaskService(
+    const task = await adminTaskService.updateById(
       parsedBody.status,
       parsedParams.taskId,
     );

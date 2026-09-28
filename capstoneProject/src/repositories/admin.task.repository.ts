@@ -2,7 +2,7 @@ import { pool } from "../lib/db.js";
 import { transformTask, transformTasks } from "../lib/utils.js";
 import { Task, TaskQuery, Tasks } from "../types/task.js";
 
-export async function findAllAdminTasksRepo(query: TaskQuery): Promise<Tasks> {
+export async function findAll(query: TaskQuery): Promise<Tasks> {
   const search = query.search ?? "";
   const page = query.page ? Number(query.page) : 1;
   const limit = query.limit ? Number(query.limit) : 10;
@@ -59,7 +59,7 @@ export async function findAllAdminTasksRepo(query: TaskQuery): Promise<Tasks> {
   };
 }
 
-export async function updateAdminTaskRepo(
+export async function updateById(
   status: string,
   taskId: string,
 ): Promise<Task | null> {
