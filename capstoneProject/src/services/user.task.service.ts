@@ -2,8 +2,8 @@ import { AppError } from "../errors/AppError.js";
 import {
   createTaskRepo,
   deleteTaskByIdRepo,
-  findTaskByIdAndUserId,
-  findTasksByUserId,
+  findTaskByIdAndUserIdRepo,
+  findTasksByUserIdRepo,
   updateTaskByIdAndUserIdRepo,
 } from "../repositories/user.task.repository.js";
 import { Task } from "../types/task.js";
@@ -16,14 +16,14 @@ export async function createTaskService(
 }
 
 export async function getTasksByUserIdService(userId: string): Promise<Task[]> {
-  return findTasksByUserId(userId);
+  return findTasksByUserIdRepo(userId);
 }
 
-export async function getTaskByIdAndUserId(
+export async function getTaskByIdAndUserIdService(
   taskId: string,
   userId: string,
 ): Promise<Task> {
-  const task = await findTaskByIdAndUserId(taskId, userId);
+  const task = await findTaskByIdAndUserIdRepo(taskId, userId);
   if (!task) {
     throw new AppError(404, "task not found");
   }

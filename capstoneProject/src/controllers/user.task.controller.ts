@@ -3,13 +3,13 @@ import { taskParams, taskSchema } from "../schemas/task.js";
 import {
   createTaskService,
   deleteTaskByIdService,
-  getTaskByIdAndUserId,
+  getTaskByIdAndUserIdService,
   getTasksByUserIdService,
   updateTaskByIdAndUserIdService,
 } from "../services/user.task.service.js";
 import { logger } from "../lib/logger.js";
 
-export async function create(
+export async function createController(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -33,7 +33,7 @@ export async function create(
   }
 }
 
-export async function getTasksByUserId(
+export async function getTasksByUserIdController(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -51,7 +51,7 @@ export async function getTasksByUserId(
   }
 }
 
-export async function getTaskById(
+export async function getTaskByIdController(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -59,7 +59,10 @@ export async function getTaskById(
   try {
     const parsedParams = taskParams.parse(req.params);
 
-    const task = await getTaskByIdAndUserId(parsedParams.taskId, req.user!.id);
+    const task = await getTaskByIdAndUserIdService(
+      parsedParams.taskId,
+      req.user!.id,
+    );
 
     res.status(200).json({
       success: true,
@@ -71,7 +74,7 @@ export async function getTaskById(
   }
 }
 
-export async function updateById(
+export async function updateByIdController(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -97,7 +100,7 @@ export async function updateById(
   }
 }
 
-export async function deleteById(
+export async function deleteByIdController(
   req: Request,
   res: Response,
   next: NextFunction,

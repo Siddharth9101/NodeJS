@@ -18,7 +18,7 @@ export async function createTaskRepo(
   return transformTask(result.rows[0]);
 }
 
-export async function findTasksByUserId(userId: string): Promise<Task[]> {
+export async function findTasksByUserIdRepo(userId: string): Promise<Task[]> {
   const result = await pool.query(
     `
     SELECT * FROM tasks WHERE user_id = $1 ORDER BY created_at DESC
@@ -29,7 +29,7 @@ export async function findTasksByUserId(userId: string): Promise<Task[]> {
   return result.rows.length > 0 ? transformTasks(result.rows) : [];
 }
 
-export async function findTaskByIdAndUserId(
+export async function findTaskByIdAndUserIdRepo(
   taskId: string,
   userId: string,
 ): Promise<Task | null> {

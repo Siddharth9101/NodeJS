@@ -1,20 +1,23 @@
 import { Router } from "express";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import {
-  create,
-  deleteById,
-  getTaskById,
-  getTasksByUserId,
-  updateById,
+  createController,
+  deleteByIdController,
+  getTaskByIdController,
+  getTasksByUserIdController,
+  updateByIdController,
 } from "../controllers/user.task.controller.js";
 
 export const userTaskRouter = Router();
 
 userTaskRouter.use(authenticate);
 
-userTaskRouter.route("/").get(getTasksByUserId).post(create);
+userTaskRouter
+  .route("/")
+  .get(getTasksByUserIdController)
+  .post(createController);
 userTaskRouter
   .route("/:taskId")
-  .get(getTaskById)
-  .patch(updateById)
-  .delete(deleteById);
+  .get(getTaskByIdController)
+  .patch(updateByIdController)
+  .delete(deleteByIdController);
