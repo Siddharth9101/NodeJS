@@ -1,0 +1,57 @@
+# Redis Course Backend - Copy/Paste cURL for Postman
+# Base URL: http://localhost:5000
+# In Postman: Import -> Raw text -> paste any curl below
+
+
+# ============================================
+# HEALTH
+# ============================================
+
+# GET /health
+curl --location 'http://localhost:5000/health'
+
+
+# ============================================
+# PRODUCTS - GET
+# ============================================
+
+# GET /products (all products)
+curl --location 'http://localhost:5000/products'
+
+# GET /products?category=accessories
+curl --location 'http://localhost:5000/products?category=accessories'
+
+# GET /products?search=keyboard
+curl --location 'http://localhost:5000/products?search=keyboard'
+
+# GET /products/:id
+curl --location 'http://localhost:5000/products/1'
+
+
+# ============================================
+# PRODUCTS - POST
+# ============================================
+
+# POST /products (create product)
+curl --location 'http://localhost:5000/products' \
+--header 'Content-Type: application/json' \
+--data '{
+  "name": "Webcam HD",
+  "description": "1080p webcam with built-in microphone",
+  "price": 59.99,
+  "category": "accessories",
+  "stock": 35
+}'
+
+
+# ============================================
+# PRODUCTS - PATCH
+# ============================================
+
+# PATCH /products/:id (partial update)
+curl --location --request PATCH 'http://localhost:5000/products/1' \
+--header 'Content-Type: application/json' \
+--data '{
+  "price": 79.99,
+  "stock": 30
+}'
