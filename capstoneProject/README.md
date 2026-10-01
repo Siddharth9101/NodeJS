@@ -241,32 +241,14 @@ ADMIN
 
 Authorization is enforced through middleware before protected resources are accessed.
 
-## 📦 Installation
+## 🐳 Running with Docker
 
-### 1. Clone the repository
+Clone the repository
 
 ```bash
 git clone https://github.com/Siddharth9101/NodeJS
 cd capstoneProject
 ```
-
-### 2. Install dependencies
-
-```bash
-npm install
-```
-
-### 3. Configure environment variables
-
-Create a `.env` file and provide the required configuration.
-
-### 4. Start the development server
-
-```bash
-npm run dev
-```
-
-## 🐳 Running with Docker
 
 Build and start the application:
 

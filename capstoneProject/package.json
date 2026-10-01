@@ -4,16 +4,19 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "npm run worker && tsx watch src/server.ts",
+    "dev": "npm run migrate && npm run worker && tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node workers/deleteCloudinaryImg.worker.js && node dist/server.js",
+    "start": "node dist/scripts/migrate.js && node dist/workers/deleteCloudinaryImg.worker.js && node dist/server.js",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "migrate": "tsx src/scripts/migrate.ts",
     "worker": "tsx src/workers/deleteCloudinaryImg.worker.ts"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "task",
+    "manager"
+  ],
+  "author": "Siddharth Saxena <siddharthsaxena9101@gmail.com>",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
