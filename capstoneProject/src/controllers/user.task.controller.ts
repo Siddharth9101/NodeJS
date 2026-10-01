@@ -84,6 +84,10 @@ export async function updateById(
       parsedBody.title,
     );
 
+    logger.info(
+      `task title updated, taskId: ${task.id}, userId: ${task.userId}, requestId: ${req.requestId}`,
+    );
+
     res.status(200).json({
       success: true,
       message: "task updated successfully",
@@ -102,12 +106,16 @@ export async function deleteById(
   try {
     const parsedParams = taskParams.parse(req.params);
 
-    await userTaskService.deleteByIdAndUserId(
+    const id = await userTaskService.deleteByIdAndUserId(
       parsedParams.taskId,
       req.user!.id,
     );
 
-    res.status(204).json({
+    logger.info(
+      `task title updated, taskId: ${id}, userId: ${req.user?.id}, requestId: ${req.requestId}`,
+    );
+
+    res.status(200).json({
       success: true,
       message: "task deleted successfully",
     });

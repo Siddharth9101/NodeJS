@@ -18,4 +18,11 @@ export const env = {
   databaseUrl: checkRequiredEnvVariable("DATABASE_URL"),
   jwtAccessSecret: checkRequiredEnvVariable("JWT_ACCESS_SECRET"),
   jwtAccessExpiresIn: checkRequiredEnvVariable("JWT_ACCESS_EXPIRES_IN"),
+  cloudinaryCloudName: checkRequiredEnvVariable("CLOUDINARY_CLOUD_NAME"),
+  cloudinaryApiKey: checkRequiredEnvVariable("CLOUDINARY_API_KEY"),
+  cloudinaryApiSecret: checkRequiredEnvVariable("CLOUDINARY_API_SECRET"),
+  redisUrl: checkRequiredEnvVariable("REDIS_URL"),
+  googleClientId: checkRequiredEnvVariable("GOOGLE_CLIENT_ID"),
+  googleClientSecret: checkRequiredEnvVariable("GOOGLE_CLIENT_SECRET"),
+  googleCallbackUrl: checkRequiredEnvVariable("GOOGLE_CALLBACK_URL"),
 } as const;

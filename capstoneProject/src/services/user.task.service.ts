@@ -38,6 +38,10 @@ export async function updateByIdAndUserId(
 export async function deleteByIdAndUserId(
   taskId: string,
   userId: string,
-): Promise<void> {
-  await userTaskRepo.deleteByIdAndUserId(taskId, userId);
+): Promise<string> {
+  const id = await userTaskRepo.deleteByIdAndUserId(taskId, userId);
+  if (!id) {
+    throw new AppError(404, "task not found");
+  }
+  return id;
 }

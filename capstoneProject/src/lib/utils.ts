@@ -1,3 +1,4 @@
+import { Banner, BannerRow } from "../types/banner.js";
 import { DbTaskRow, Task } from "../types/task.js";
 import {
   DbUserRow,
@@ -49,4 +50,14 @@ export function transformTasks(tasks: DbTaskRow[]): Task[] {
       updatedAt: task.updated_at,
     };
   });
+}
+
+export function transformBanner(banner: BannerRow): Banner {
+  return {
+    id: banner.id,
+    imageUrl: banner.image_url,
+    cloudinaryPublicId: banner.cloudinary_public_id,
+    updatedAt: banner.updated_at,
+    createdAt: banner.created_at,
+  };
 }

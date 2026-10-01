@@ -69,3 +69,35 @@ export async function me(
     next(err);
   }
 }
+
+export async function googleAuth(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const googleAuthUrl = authService.startGoogleLogin();
+    res.redirect(googleAuthUrl);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function googleLogin(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const code = req.query.code as string | undefined;
+
+    const { accessToken } = await authService.loginWithGoogle(code ?? "");
+    res.status(200).json({
+      success: true,
+      message: "login successfull",
+      data: { accessToken },
+    });
+  } catch (err) {
+    next(err);
+  }
+}

@@ -5,6 +5,7 @@ import {
   taskQueryParams,
   updateAdminTaskSchema,
 } from "../schemas/task.js";
+import { logger } from "../lib/logger.js";
 
 export async function getAllAdminTasks(
   req: Request,
@@ -38,6 +39,10 @@ export async function updateAdminTask(
     const task = await adminTaskService.updateById(
       parsedBody.status,
       parsedParams.taskId,
+    );
+
+    logger.info(
+      `task status updated, taskId: ${task.id}, requestId: ${req.requestId}`,
     );
 
     res.status(200).json({

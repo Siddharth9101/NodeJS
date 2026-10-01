@@ -43,3 +43,51 @@ export async function findByEmailWithPassword(
 
   return result.rows[0] ? transformUserWithPassword(result.rows[0]) : null;
 }
+
+export async function findUserByGoogleId(
+  googleId: string,
+): Promise<User | null> {
+  const result = await pool.query(
+    `
+      SELECT id, email, role, created_at
+      FROM users
+      WHERE google_id = $1
+    `,
+    [googleId],
+  );
+
+  return result.rows.length !== 0 ? transformUser(result.rows[0]) : null;
+}
+
+export async function linkGoogleIdToUser(
+  userId: string,
+  googleId: string,
+): Promise<User> {
+  const result = await pool.query(
+    `
+      UPDATE users
+      SET google_id = $1, updated_at = NOW()
+      WHERE id = $2
+      RETURNING id, email, role, created_at
+    `,
+    [googleId, userId],
+  );
+
+  return transformUser(result.rows[0]);
+}
+
+export async function createGoogleUser(
+  email: string,
+  googleId: string,
+): Promise<User> {
+  const result = await pool.query(
+    `
+      INSERT INTO users (email, google_id)
+      VALUES ($1, $2)
+      RETURNING id, email, role, created_at
+    `,
+    [email, googleId],
+  );
+
+  return transformUser(result.rows[0]);
+}

@@ -61,11 +61,13 @@ export async function updateByIdAndUserId(
 export async function deleteByIdAndUserId(
   taskId: string,
   userId: string,
-): Promise<void> {
-  await pool.query(
+): Promise<string | null> {
+  const result = await pool.query<{ id: string }>(
     ` 
-    DELETE FROM tasks WHERE id = $1 AND user_id = $2
+    DELETE FROM tasks WHERE id = $1 AND user_id = $2 RETURNING id
     `,
     [taskId, userId],
   );
+
+  return result.rows[0]?.id ?? null;
 }
