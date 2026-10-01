@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "npm run worker && tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node workers/deleteCloudinaryImg.worker.js && node dist/server.js",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "migrate": "tsx src/scripts/migrate.ts",
